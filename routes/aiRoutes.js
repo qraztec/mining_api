@@ -2,7 +2,6 @@
 const express = require('express');
 const axios = require('axios');
 const router = express.Router();
-//require('dotenv').config(); // to use .env variables
 
 // AI Evaluation Route
 router.post('/evaluate', async (req, res) => {
@@ -10,35 +9,45 @@ router.post('/evaluate', async (req, res) => {
 
     try {
         // Call OpenAI API using GPT-4 to evaluate the answers
-        const aiResponse = await axios.post('https://api.openai.com/v1/completions', {
-            model: 'gpt-4', // Model used here is GPT-4
-            prompt: `
-                Evaluate the following answers and provide a score between -10 and 10:
-                1. Pollution Control: ${pollutionControl}
-                2. Community Engagement: ${communityEngagement}
-                3. Water Recycling: ${waterRecycling}
-                
-                Give the scores in the format:
-                pollution_control: score,
-                food_sovereignty: score,
-                water_recycling: score
-            `,
+        const aiResponse = await axios.post('https://api.openai.com/v1/chat/completions', {
+            model: 'gpt-4o-mini', // Model used here is GPT-4
+            messages: [
+                {
+                    role: "system",
+                    content: "You are an evaluator that scores responses on pollution control, food sovereignty, and water recycling on a scale from -10 to 10."
+                },
+                {
+                    role: "user",
+                    content: `
+                        Evaluate the following answers and provide a score between -10 and 10:
+                        1. Pollution Control: ${pollutionControl}
+                        2. Community Engagement: ${communityEngagement}
+                        3. Water Recycling: ${waterRecycling}
+                        
+                        Give the scores in the format:
+                        pollution_control: score,
+                        food_sovereignty: score,
+                        water_recycling: score
+                    `
+                }
+            ],
             max_tokens: 100,
-            temperature: 0.7, // Adjust this based on how creative you want the responses
+            temperature: 0.7, // Adjust based on how creative you want the responses
         }, {
             headers: {
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Authorization': 'Bearer sk-LhFPg2_JwLxkCP7rILO_kYTTWpWFnDVHwQV_m4fG5tT3BlbkFJeWY6l2JfRrXYB_RlXuoibpOvBqB6xzjNrkTs1h_mMA', // Use environment variable
+                'Content-Type': 'application/json'
             }
         });
 
         // Parsing AI Response
-        const responseText = aiResponse.data.choices[0].text;
+        const responseText = aiResponse.data.choices[0].message.content;
         const scores = extractScoresFromResponse(responseText);
 
         // Return the scores back to the frontend
         res.status(200).json(scores);
     } catch (error) {
-        console.error('Error evaluating with AI:', error);
+        console.error('Error evaluating with AI:', error.response ? error.response.data : error.message);
         res.status(500).json({ error: 'AI evaluation failed' });
     }
 });

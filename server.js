@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const operationRoutes = require('./routes/operationRoutes');
 const feedbackRoutes = require('./routes/feedbackRoutes');
 const profileRoutes = require('./routes/profileRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 const cors = require('cors')
 
 
@@ -25,6 +26,7 @@ mongoose.connect('mongodb+srv://gerumghl:s61g9OrTZAMn2g6R@miningcluster.kwv3a.mo
 app.use(operationRoutes);
 app.use(feedbackRoutes);
 app.use(profileRoutes);
+app.use(aiRoutes)
 
 const PORT = 6565;
 

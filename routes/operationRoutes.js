@@ -14,9 +14,10 @@ router.post('/operations', async (req, res) => {
 });
 
 // Get all operations
-router.get('/operations', async (req, res) => {
+router.get('/operations/:companyID', async (req, res) => {
+    const { companyID } = req.params;
     try {
-        const operations = await Operation.find();
+        const operations = await Operation.find({ companyID }); // Find operations by companyID
         res.status(200).send(operations);
     } catch (error) {
         res.status(500).send(error);
