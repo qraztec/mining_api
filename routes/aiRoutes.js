@@ -3,6 +3,8 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 
+
+
 // AI Evaluation Route
 router.post('/evaluate', async (req, res) => {
     const { pollutionControl, communityEngagement, waterRecycling } = req.body;
@@ -34,8 +36,8 @@ router.post('/evaluate', async (req, res) => {
             max_tokens: 100,
             temperature: 0.7, // Adjust based on how creative you want the responses
         }, {
-            headers: {
-                'Authorization': 'Bearer sk-LhFPg2_JwLxkCP7rILO_kYTTWpWFnDVHwQV_m4fG5tT3BlbkFJeWY6l2JfRrXYB_RlXuoibpOvBqB6xzjNrkTs1h_mMA', // Use environment variable
+            headers: {//ENTER API KEY HERE
+                'Authorization': `Bearer ${API_KEY}`, // Use environment variable
                 'Content-Type': 'application/json'
             }
         });

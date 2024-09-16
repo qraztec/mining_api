@@ -13,6 +13,33 @@ router.post('/operations', async (req, res) => {
     }
 });
 
+// Get a specific operation by companyID and area
+router.get('/operations/:companyID/:area', async (req, res) => {
+    const { companyID, area } = req.params;
+    try {
+        const operation = await Operation.findOne({ companyID, area });
+        if (!operation) {
+            return res.status(404).json({ message: 'Operation not found' });
+        }
+        res.status(200).json(operation);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching operation data' });
+    }
+});
+
+// In operationRoutes.js
+router.get('/operations/:areaName', async (req, res) => {
+    const { areaName } = req.params;
+    try {
+        const operations = await Operation.find({ area: areaName }); // Fetch operations for the area
+        res.status(200).json(operations);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching operations' });
+    }
+});
+
+
+
 // Get all operations
 router.get('/operations/:companyID', async (req, res) => {
     const { companyID } = req.params;

@@ -27,6 +27,7 @@ app.use(operationRoutes);
 app.use(feedbackRoutes);
 app.use(profileRoutes);
 app.use(aiRoutes)
+app.use(cors())
 
 const PORT = 6565;
 
