@@ -14,7 +14,7 @@ router.post('/operations', async (req, res) => {
 });
 
 // Get a specific operation by companyID and area
-router.get('/operations/:companyID/:area', async (req, res) => {
+router.get('/operations/ca/:companyID/:area', async (req, res) => {
     const { companyID, area } = req.params;
     try {
         const operation = await Operation.findOne({ companyID, area });
@@ -28,7 +28,7 @@ router.get('/operations/:companyID/:area', async (req, res) => {
 });
 
 // In operationRoutes.js
-router.get('/operations/:areaName', async (req, res) => {
+router.get('/operations/area/:areaName', async (req, res) => {
     const { areaName } = req.params;
     try {
         const operations = await Operation.find({ area: areaName }); // Fetch operations for the area
@@ -41,7 +41,8 @@ router.get('/operations/:areaName', async (req, res) => {
 
 
 // Get all operations
-router.get('/operations/:companyID', async (req, res) => {
+router.get('/operations/company/:companyID', async (req, res) => {
+    
     const { companyID } = req.params;
     try {
         const operations = await Operation.find({ companyID }); // Find operations by companyID

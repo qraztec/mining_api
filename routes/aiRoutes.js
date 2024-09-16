@@ -2,7 +2,7 @@
 const express = require('express');
 const axios = require('axios');
 const router = express.Router();
-
+const apiKey = process.env.OPENAI_API_KEY;
 
 
 // AI Evaluation Route
@@ -37,7 +37,7 @@ router.post('/evaluate', async (req, res) => {
             temperature: 0.7, // Adjust based on how creative you want the responses
         }, {
             headers: {//ENTER API KEY HERE
-                'Authorization': `Bearer sk-LhFPg2_JwLxkCP7rILO_kYTTWpWFnDVHwQV_m4fG5tT3BlbkFJeWY6l2JfRrXYB_RlXuoibpOvBqB6xzjNrkTs1h_mMA`, // Use environment variable
+                'Authorization': `Bearer ${apiKey}`, // Use environment variable
                 'Content-Type': 'application/json'
             }
         });
